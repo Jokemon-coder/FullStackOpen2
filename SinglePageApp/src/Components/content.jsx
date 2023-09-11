@@ -15,7 +15,7 @@ const Content = ({course}) => {
     return(
       <>
       {
-        course.map(part => {
+        course.parts.map(part => {
             console.log(part);
             return(
                 <Part key={part.id} part={part.name} exercises={part.exercises}></Part>

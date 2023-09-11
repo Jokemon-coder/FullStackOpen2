@@ -1,8 +1,14 @@
-const Total = ({parts}) => {
-    console.log(parts);
+const Total = ({course}) => {
+    console.log(course);
+
+     /*courses.forEach(course => {
+      const parts = course.parts;
+
+      const exercisesArray = [];*/
+
+    const parts = course.parts;
 
     const exercisesArray = [];
-
     parts.forEach(part => {
       exercisesArray.push(part.exercises);
       console.log(exercisesArray);

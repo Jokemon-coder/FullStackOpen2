@@ -1,8 +1,9 @@
 import Course from "./Components/course";
-import Total from "./Components/total";
+//import Total from "./Components/total";
 
 const App = () => {
-  const course = {
+  const courses = [
+    {
     name: 'Half Stack application development',
     id: 1,
     parts: [
@@ -26,13 +27,29 @@ const App = () => {
         exercises: 8,
         id: 4
       }
-    ]
-  }
+    ]},
+    {
+    name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ] 
+    }
+]
+  console.log(courses);
 
 return (
 <div>
-<Course course={course}></Course>
-<Total parts={course.parts}/>
+<Course courses={courses}></Course>
 </div>
 );
 }

@@ -1,16 +1,21 @@
 import Header from "./header";
 import Content from "./content";
+import Total from "./total";
 
-const Course = ({course}) => {
+const Course = ({courses}) => {
 
-    console.log(course);
+    console.log(courses);
 
-    return (
-        <>
+    return(
+    courses.map(course => {
+        return(
+        <div key={course.id}>
         <Header name={course.name}/>
-        <Content course={course.parts}/>
-        </>
-    );
+        <Content course={course}/>
+        <Total course={course}/>
+        </div>
+        );
+    }));
 
 }
 
