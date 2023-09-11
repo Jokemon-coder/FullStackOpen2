@@ -1,16 +1,19 @@
 const Total = ({parts}) => {
     console.log(parts);
 
-    let number = 0;
+    const exercisesArray = [];
 
     parts.forEach(part => {
-       number = number + part.exercises;
-       console.log(number);
-    });
+      exercisesArray.push(part.exercises);
+      console.log(exercisesArray);
+      });
+      const initialNum = 0;
+      const totalExercises = exercisesArray.reduce((accumulator, currentValue) => accumulator + currentValue, initialNum);
+      console.log(totalExercises);
     return(
       <>
       <p>
-        Number of exercises {number}
+        Number of exercises {totalExercises}
       </p>
       </>
     );
