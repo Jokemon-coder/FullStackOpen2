@@ -5,6 +5,18 @@ const App = () => {
     { name: "Arto Hellas",
       number: "0402731865",
       id: 1
+    },
+    { name: "Petri Kallio",
+    number: "0456872881",
+    id: 2
+    },
+    { name: "Tomi Kulta",
+    number: "0405832616",
+    id: 3
+    },
+    { name: "Anni Suonpää",
+    number: "0408970032",
+    id: 4
     }
   ]) 
   const [newName, setNewName] = useState("")
@@ -52,15 +64,26 @@ const App = () => {
   
   }
 
-  /*const [showSpec, setShowSpec] = useState();
+  const [filtered, setFiltered] = useState(persons);
 
   const filterContacts = (e) => {
+    let filter = persons.filter(person => person.name.toLowerCase().includes(e.target.value.toLowerCase()));
+    setFiltered(filter);
+  }
 
-  }*/
+  let mappedFiltered = filtered.map((f) => {
+    return (
+      <p key={f.id}>{f.name} {f.number}</p>
+    )
+  })
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+          <h2>Filter contacts</h2>
+          <input onChange={filterContacts}></input>
+        </div>
       <form onSubmit={addNewName}>
         <div>
         <h2>Add a contact</h2>
@@ -73,11 +96,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((person) => {
-        return (
-          <p key={person.id}>{person.name} {person.number}</p>
-        )
-        })}
+      {mappedFiltered}
     </div>
   )
 
