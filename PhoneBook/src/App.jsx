@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import ContactForm from './Components/ContactForm'
+import Contacts from './Components/Contacts'
+import Filter from './Components/Filter'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -23,7 +25,8 @@ const App = () => {
   const [newName, setNewName] = useState("")
   const [newNum, setNewNum] = useState("")
 
-  const handleChange = (e) => {
+  const HandleChange = (e) => {
+    //Distinguish nameInput and numberInput from eachother
     if(e.target.id === "nameInput")
     {
       setNewName(e.target.value)
@@ -36,7 +39,7 @@ const App = () => {
     }
   }
 
-  const addNewName = (e) => {
+  const AddNewName = (e) => {
     e.preventDefault();
     const nameObject = {
       name: newName,
@@ -44,7 +47,11 @@ const App = () => {
       id: persons.length+1
     }
     
-    if((!persons.some(e => e.name === newName) && newName !== "") && (!persons.some(e => e.number === newNum) && newNum !== "") && (/^\d+$/.test(newNum)))
+    //If some returns false and newName/newNum is not empty, proceed
+    //Also check if numberInput actually contains numbers instead of letters
+    if((!persons.some(e => e.name === newName) && newName !== "") &&
+    (!persons.some(e => e.number === newNum) && newNum !== "") && 
+    (/^\d+$/.test(newNum)))
     {
       console.log(nameObject);
       console.log(persons);
@@ -57,7 +64,9 @@ const App = () => {
     {
       if(newName !== "" && newNum !== "")
       {
-        (/^\d+$/.test(newNum)) ? alert("This contact can already be found") : alert("fuck you");
+        (/^\d+$/.test(newNum)) ? 
+        alert("This contact can already be found") :
+        alert("Only enter numbers");
       }
       else
       alert("You cant enter an empty entry");
@@ -67,7 +76,10 @@ const App = () => {
 
   const [filtered, setFiltered] = useState(persons);
 
-  const filterContacts = (e) => {
+  const FilterContacts = (e) => {
+    /*Get filtered contacts based on user input and set
+    them as the state of filtered
+    */
     let filter = persons.filter(person => person.name.toLowerCase().includes(e.target.value.toLowerCase()));
     setFiltered(filter);
   }
@@ -78,36 +90,19 @@ const App = () => {
     )
   })
 
+  //Set filtered as persons whenever a new contact is added
   useEffect(() => {
     setFiltered(persons);
   }, [persons])
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <div>
-          <h2>Filter contacts</h2>
-          <input onChange={filterContacts}></input>
-        </div>
-      <ContactForm addNewName={addNewName} onChange={handleChange}/>
-      <h2>Numbers</h2>
-      {mappedFiltered}
+      <h1>Phonebook</h1>
+      <Filter onChange={FilterContacts}/>
+      <ContactForm addNewName={AddNewName} onChange={HandleChange}/>
+      <Contacts contacts={mappedFiltered}/>
     </div>
   )
-
-  /**
-   * 
-   *       <form onSubmit={addNewName}>
-        <div>
-        <h2>Add a contact</h2>
-        name: <input id='nameInput' onChange={handleChange}/> number: <input id='numberInput' onChange={handleChange}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-   */
-
 }
 
 export default App

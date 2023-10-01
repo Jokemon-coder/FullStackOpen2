@@ -7,7 +7,9 @@ const ContactForm = ({addNewName, onChange}) => {
         <form onSubmit={addNewName}>
         <div>
         <h2>Add a contact</h2>
-        name: <input id='nameInput' onChange={onChange}/> number: <input id='numberInput' onChange={onChange}/>
+        name: <input id='nameInput' onChange={onChange}/>
+        <br/>
+        number: <input id='numberInput' onChange={onChange}/>
         </div>
         <div>
           <button type="submit">add</button>
