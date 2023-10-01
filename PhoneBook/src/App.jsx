@@ -77,6 +77,10 @@ const App = () => {
     )
   })
 
+  useEffect(() => {
+    setFiltered(persons);
+  }, [persons])
+
   return (
     <div>
       <h2>Phonebook</h2>
