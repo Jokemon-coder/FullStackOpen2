@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import ContactForm from './Components/ContactForm'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -88,21 +89,24 @@ const App = () => {
           <h2>Filter contacts</h2>
           <input onChange={filterContacts}></input>
         </div>
-      <form onSubmit={addNewName}>
+      <ContactForm addNewName={addNewName} onChange={handleChange}/>
+      <h2>Numbers</h2>
+      {mappedFiltered}
+    </div>
+  )
+
+  /**
+   * 
+   *       <form onSubmit={addNewName}>
         <div>
         <h2>Add a contact</h2>
-          name: <input id='nameInput' onChange={handleChange}/>
-          <br/>
-          number: <input id='numberInput' onChange={handleChange}/>
+        name: <input id='nameInput' onChange={handleChange}/> number: <input id='numberInput' onChange={handleChange}/>
         </div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
-      <h2>Numbers</h2>
-      {mappedFiltered}
-    </div>
-  )
+   */
 
 }
 
