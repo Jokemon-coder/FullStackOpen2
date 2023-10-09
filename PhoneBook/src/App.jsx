@@ -2,28 +2,19 @@ import { useEffect, useState } from 'react'
 import ContactForm from './Components/ContactForm'
 import Contacts from './Components/Contacts'
 import Filter from './Components/Filter'
+import axios from 'axios'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas",
-      number: "0402731865",
-      id: 1
-    },
-    { name: "Petri Kallio",
-    number: "0456872881",
-    id: 2
-    },
-    { name: "Tomi Kulta",
-    number: "0405832616",
-    id: 3
-    },
-    { name: "Anni Suonpää",
-    number: "0408970032",
-    id: 4
-    }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState("")
   const [newNum, setNewNum] = useState("")
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/persons").then((response) => {
+      console.log(response.data);
+      setPersons(response.data);
+  })
+  }, [])
 
   const HandleChange = (e) => {
     //Distinguish nameInput and numberInput from eachother
