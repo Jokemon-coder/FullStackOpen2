@@ -3,6 +3,7 @@ import ContactForm from './Components/ContactForm'
 import Contacts from './Components/Contacts'
 import Filter from './Components/Filter'
 import axios from 'axios'
+import notes from './Services/notes'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -10,11 +11,17 @@ const App = () => {
   const [newNum, setNewNum] = useState("")
 
   const GetAllContacts = () => {
-    axios.get("http://localhost:3000/persons").then((response) => {
-      console.log(response.data);
-      setPersons(response.data);
-  })
+    notes.GetAll().then((personsData) => {
+      setPersons(personsData);
+    });
   }
+
+  const AddNewContact = (newContact) => {
+    notes.AddContact(newContact).then(() => {
+      GetAllContacts();
+    })
+  }
+  
   useEffect(() => {
     GetAllContacts();
   }, [])
@@ -49,11 +56,7 @@ const App = () => {
     {
       console.log(nameObject);
       console.log(persons);
-      axios.post("http://localhost:3000/persons", nameObject).then((response) => {
-        console.log(response);
-      }).then(() => {
-        GetAllContacts();
-      })
+      AddNewContact(nameObject);
       setNewName("");
       e.target.reset();
       
