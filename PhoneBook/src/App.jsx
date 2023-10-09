@@ -9,11 +9,14 @@ const App = () => {
   const [newName, setNewName] = useState("")
   const [newNum, setNewNum] = useState("")
 
-  useEffect(() => {
+  const GetAllContacts = () => {
     axios.get("http://localhost:3000/persons").then((response) => {
       console.log(response.data);
       setPersons(response.data);
   })
+  }
+  useEffect(() => {
+    GetAllContacts();
   }, [])
 
   const HandleChange = (e) => {
@@ -46,7 +49,11 @@ const App = () => {
     {
       console.log(nameObject);
       console.log(persons);
-      setPersons(persons.concat(nameObject));
+      axios.post("http://localhost:3000/persons", nameObject).then((response) => {
+        console.log(response);
+      }).then(() => {
+        GetAllContacts();
+      })
       setNewName("");
       e.target.reset();
       
