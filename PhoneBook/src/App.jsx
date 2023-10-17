@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import ContactForm from './Components/ContactForm'
 import Contacts from './Components/Contacts'
 import Filter from './Components/Filter'
-import axios from 'axios'
 import notes from './Services/notes'
 
 const App = () => {
@@ -13,13 +12,28 @@ const App = () => {
   const GetAllContacts = () => {
     notes.GetAll().then((personsData) => {
       setPersons(personsData);
+      console.log(persons);
     });
   }
 
   const AddNewContact = (newContact) => {
-    notes.AddContact(newContact).then(() => {
-      GetAllContacts();
-    })
+    if(persons.filter(person => person.id === newContact.id))
+    {
+      const changedNewContact = {...newContact, id: newContact++}
+      notes.AddContact(changedNewContact).then(() => {
+        GetAllContacts();
+      }).catch((e) => {
+        console.log(e.response.data);
+      })
+    }
+    else
+    {
+      notes.AddContact(newContact).then(() => {
+        GetAllContacts();
+      }).catch((e) => {
+        console.log(e.response.data);
+      })
+    }
   }
   
   useEffect(() => {
@@ -75,6 +89,23 @@ const App = () => {
   
   }
 
+  const DeleteContact = (contactId) => {
+    notes.GetAll();
+    const contactUrl = `http://localhost:3000/persons/${contactId}`;
+    persons.forEach((person) => {
+      //console.log(person);
+    })
+    const contact = persons.find(n => n.id === contactId);
+    //console.log(contact);
+
+    notes.DeleteContact(contactId).then(() => {
+      notes.GetAll().then((res => {
+        console.log(res);
+        setPersons(res);
+      }))
+      
+    })}
+
   const [filtered, setFiltered] = useState(persons);
 
   const FilterContacts = (e) => {
@@ -87,7 +118,9 @@ const App = () => {
 
   let mappedFiltered = filtered.map((f) => {
     return (
-      <p key={f.id}>{f.name} {f.number}</p>
+      <div key={f.id}>
+        <p>{f.name} {f.number}</p><button onClick={() => DeleteContact(f.id)}>Delete</button>
+      </div>
     )
   })
 
