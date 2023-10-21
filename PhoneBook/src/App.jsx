@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import ContactForm from './Components/ContactForm'
 import Contacts from './Components/Contacts'
 import Filter from './Components/Filter'
-import axios from 'axios'
 import notes from './Services/notes'
 
 const App = () => {
