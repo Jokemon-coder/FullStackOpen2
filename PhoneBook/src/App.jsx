@@ -102,8 +102,16 @@ const App = () => {
         {
           notes.GetAll().then((res) => {
             const existingContact = res.find((e) => e.name === newName);
-            axios.put(`${url}${existingContact.id}`, {name: newName, number: newNum, id: existingContact.id});
+            const contactData = {
+              name: newName, 
+              number: newNum, 
+              id: existingContact.id
+            }
+            notes.EditContact(existingContact.id, contactData);
             GetAllContacts();
+            setNewName("");
+            setNewNum("");
+            e.target.reset();
           })
         }
       } 
