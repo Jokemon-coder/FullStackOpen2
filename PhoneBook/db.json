@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Petteri",
-      "number": "1234",
-      "id": 1
-    },
-    {
       "name": "Juuso",
       "number": "3578",
       "id": 2
@@ -16,16 +11,6 @@
       "id": 3
     },
     {
-      "name": "Liisa",
-      "number": "7937",
-      "id": 4
-    },
-    {
-      "name": "Kilo",
-      "number": "2635",
-      "id": 5
-    },
-    {
       "name": "Luka",
       "number": "7958",
       "id": 6
@@ -34,6 +19,11 @@
       "name": "Konkkari",
       "number": "12346",
       "id": 7
+    },
+    {
+      "name": "Jesse",
+      "number": "6753",
+      "id": 8
     }
   ]
 }

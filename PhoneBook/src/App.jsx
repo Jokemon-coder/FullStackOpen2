@@ -3,13 +3,16 @@ import ContactForm from './Components/ContactForm'
 import Contacts from './Components/Contacts'
 import Filter from './Components/Filter'
 import notes from './Services/notes'
+import Notification from './Components/Notification'
 
 const App = () => {
-  const url = `http://localhost:3000/persons/`;
 
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState("")
   const [newNum, setNewNum] = useState("")
+
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [visible, setVisible] = useState(false)
 
   const GetAllContacts = () => {
     notes.GetAll().then((personsData) => {
@@ -37,24 +40,6 @@ const App = () => {
       })
     }
   }
-  
-  useEffect(() => {
-    GetAllContacts();
-  }, [])
-
-  const HandleChange = (e) => {
-    //Distinguish nameInput and numberInput from eachother
-    if(e.target.id === "nameInput")
-    {
-      setNewName(e.target.value)
-      console.log(newName);
-    }
-    else
-    {
-      setNewNum(e.target.value)
-      console.log(newNum)
-    }
-  }
 
   const AddNewName = (e) => {
     let checkNum = /^\d+$/.test(newNum);
@@ -76,6 +61,7 @@ const App = () => {
       AddNewContact(nameObject);
       setNewName("");
       e.target.reset();
+      setNotificationMessage(`${newName} has been added to the list of contacts.`)
       //Return to prevent final else from giving an alert
       return;
       
@@ -111,6 +97,8 @@ const App = () => {
             setNewName("");
             setNewNum("");
             e.target.reset();
+
+            setNotificationMessage(`${newName}'s number has been updated.`)
           })
         }
       } 
@@ -123,16 +111,14 @@ const App = () => {
 
   const DeleteContact = (contactId) => {
     notes.GetAll();
-    persons.forEach((person) => {
-      //console.log(person);
-    })
+    
     const contact = persons.find(n => n.id === contactId);
-    //console.log(contact);
 
     notes.DeleteContact(contactId).then(() => {
       notes.GetAll().then((res => {
         console.log(res);
         setPersons(res);
+        setNotificationMessage(`${contact.name} has been deleted.`)
       }))
       
     })}
@@ -155,15 +141,45 @@ const App = () => {
     )
   })
 
+  const HandleChange = (e) => {
+    //Distinguish nameInput and numberInput from eachother
+    if(e.target.id === "nameInput")
+    {
+      setNewName(e.target.value)
+      console.log(newName);
+    }
+    else
+    {
+      setNewNum(e.target.value)
+      console.log(newNum)
+    }
+  }
+
   //Set filtered as persons whenever a new contact is added
   useEffect(() => {
     setFiltered(persons);
-  }, [persons])
+
+    //Whenever the notificationMessage is set and it is not empty, change visibility for notification and change it back after 5 seconds
+    if(notificationMessage !== "")
+    {
+      setVisible(true);
+      setTimeout(() => {
+        setVisible(false)
+        setNotificationMessage("")
+      }, 5000)
+    }
+
+  }, [persons, notificationMessage])
+
+  useEffect(() => {
+    GetAllContacts();
+  }, [])
 
   return (
     <div>
       <h1>Phonebook</h1>
       <Filter onChange={FilterContacts}/>
+      <Notification message={notificationMessage} visible={visible}></Notification>
       <ContactForm addNewName={AddNewName} onChange={HandleChange}/>
       <Contacts contacts={mappedFiltered}/>
     </div>
