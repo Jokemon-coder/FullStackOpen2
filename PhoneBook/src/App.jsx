@@ -13,6 +13,7 @@ const App = () => {
 
   const [notificationMessage, setNotificationMessage] = useState("");
   const [visible, setVisible] = useState(false)
+  const [error, setError] = useState(false);
 
   const GetAllContacts = () => {
     notes.GetAll().then((personsData) => {
@@ -113,15 +114,18 @@ const App = () => {
     notes.GetAll();
     
     const contact = persons.find(n => n.id === contactId);
-
-    notes.DeleteContact(contactId).then(() => {
-      notes.GetAll().then((res => {
-        console.log(res);
-        setPersons(res);
-        setNotificationMessage(`${contact.name} has been deleted.`)
-      }))
-      
-    })}
+      notes.DeleteContact(contactId).then(() => {
+        notes.GetAll().then((res => {
+          console.log(res);
+          setPersons(res);
+          setNotificationMessage(`${contact.name} has been deleted.`)
+        }))
+      }).catch(e => {
+        console.log(e);
+        setNotificationMessage(`${contact.name} no longer exists in the database.`)
+        setError(true);
+      })
+}
 
   const [filtered, setFiltered] = useState(persons);
 
@@ -165,6 +169,7 @@ const App = () => {
       setVisible(true);
       setTimeout(() => {
         setVisible(false)
+        setError(false)
         setNotificationMessage("")
       }, 5000)
     }
@@ -179,7 +184,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <Filter onChange={FilterContacts}/>
-      <Notification message={notificationMessage} visible={visible}></Notification>
+      <Notification message={notificationMessage} visible={visible} error={error}></Notification>
       <ContactForm addNewName={AddNewName} onChange={HandleChange}/>
       <Contacts contacts={mappedFiltered}/>
     </div>
