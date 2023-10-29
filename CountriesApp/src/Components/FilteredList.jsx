@@ -1,8 +1,16 @@
 import React from "react";
-import Country from "./Country";
 
-const FilterList = ({countries, mappedCountries}) => {
+const FilterList = ({single ,loading, mappedCountries}) => {
 
+    //Display while data is loading
+    if(loading !== true)
+    {
+        return (
+            <p>Loading...</p>
+        )
+    }
+    
+    //Too many results
     if(mappedCountries.length > 10)
     {
         return (
@@ -11,13 +19,9 @@ const FilterList = ({countries, mappedCountries}) => {
             </p>
         )
     }
-    if(mappedCountries.length === 0)
-    {
-        return (
-            <Country country={countries}/>
-        )
-    }
-    if(mappedCountries.length <= 10)
+
+    //Show countries if there are 10 or less but also not a single one
+    if(mappedCountries.length <= 10 && single === false)
     {
     return (
         <>
@@ -25,6 +29,7 @@ const FilterList = ({countries, mappedCountries}) => {
         </>
     )
     }
+    
 }
 
 export default FilterList;
