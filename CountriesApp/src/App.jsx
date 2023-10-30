@@ -46,6 +46,7 @@ const App = () => {
   }, [])
 
   const getGeo = (city, code, limit) => {
+    //Get the location of the given city to utilize it for getting its weather
     countries.GetGeoLocation(`http://api.openweathermap.org/geo/1.0/direct?q=${city},${code}&limit=${limit}&appid=${apiKey}`).then((res) => {
       countries.GetWeather(`https://api.openweathermap.org/data/2.5/weather?lat=${res.data[0].lat}&lon=${res.data[0].lon}&units=metric&appid=${apiKey}`).then((res) => {
       setCapitalWeather(res.data);

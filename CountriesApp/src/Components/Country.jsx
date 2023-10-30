@@ -6,6 +6,8 @@ const Country = ({country, getGeo, weather}) => {
     const [wind, setWind] = useState();
 
     useEffect(() => {
+        //Whenever country is changed and it is no longer false, get the location and set temp and wind to undefined
+        //Setting temp/wind to undefined leads to it not displaying the previous city's weather info for a split second on rerenders
         if(country !== false)
         {
             getGeo(country.capital, country.cca2 ,5);
@@ -25,14 +27,6 @@ const Country = ({country, getGeo, weather}) => {
 
     if(country !== false)
     {
-        //const [temp, setTemp] = useState(weather.temp);
-        //const [wind, setWind] = useState(weather.wind);
-
-        /*if(weather !== undefined)
-        {*/
-            //setTemp(weather.main.temp);
-            //setWind(weather.main.wind);
-        //}
         //Set up the languages and map through them
         const languages = Object.values(country.languages); 
         const mappedLanguages = languages.map((lang) => {
@@ -51,8 +45,6 @@ const Country = ({country, getGeo, weather}) => {
 
         //If there is a single capital, set the unmapped capitals as the value. Otherwise set the mapped capitals as the value
         const capitalDisplay = capitals.length === 1 ? {text: "Capital:", capital: capitals} : {text: "Capitals:", capital: mappedCapitals}
-
-        
 
         return (
             <>
